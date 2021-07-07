@@ -12,18 +12,20 @@
     Network = @{
         VnetName = "d-esgi-vnet1"
         VnetAddressPrefix = "10.0.0.0/16"
-        SubnetName = "d-esgi-subnet-01"
+        SubnetName_01 = "d-esgi-subnet-01"
         SubnetAddressPrefix = "10.0.1.0/24"
         NSGName_01 = "d-esgi-nsg-web-01"
         PublicIP_Name = "d-esgi-publicip-01"
     }
     
     Bastion = @{
+        VnetName = "d-esgi-vnet-bastion"
+        VnetAddressPrefix = "192.168.0.0/16"
         SubnetName = "AzureBastionSubnet"
         PublicIP_Name = "d-esgi-publicip-bastion"
-        SubnetAddressPrefix = "10.0.2.0/24"
+        SubnetAddressPrefix = "192.168.2.0/27"
     }
-    
+
     Data = @{
         VM_file_Name = "C:\Powershell\Projet\ESGI_YMF_Virtual_Machines.csv"
     }

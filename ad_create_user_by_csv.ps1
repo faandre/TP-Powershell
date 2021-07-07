@@ -2,10 +2,10 @@
 Import-Module ActiveDirectory
   
 # Store the data from ad_user.csv in the $ADUsers variable
-$ADUsers = Import-Csv 'D:\Lyon\Master 1\Projet powershell' -Delimiter ","
+$ADUsers = Import-Csv 'Z:\ad_user.csv' -Delimiter ","
 
 # Define UPN
-$UPN = "sciencesu.com"
+$UPN = "projet.local"
 
 # Loop through each row containing user details in the CSV file
 foreach ($User in $ADUsers) {
@@ -16,7 +16,6 @@ foreach ($User in $ADUsers) {
     $firstname = $User.firstname
     $lastname = $User.lastname
     $initials = $User.initials
-    $OU = $User.ou #This field refers to the OU the user account is to be created in
     $email = $User.email
     $streetaddress = $User.streetaddress
     $city = $User.city
@@ -44,7 +43,6 @@ foreach ($User in $ADUsers) {
             -Initials $initials `
             -Enabled $True `
             -DisplayName "$lastname, $firstname" `
-            -Path $OU `
             -City $city ` `
             -Company $company `
             -StreetAddress $streetaddress `
