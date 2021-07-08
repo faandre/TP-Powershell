@@ -2,7 +2,7 @@
 Import-Module ActiveDirectory
   
 # Store the data from ad_user.csv in the $ADUsers variable
-$ADUsers = Import-Csv 'Z:\ad_user.csv' -Delimiter ","
+$ADUsers = Import-Csv 'C:\Git_Powershell\TP-Powershell\ad_user.csv' -Delimiter ","
 
 # Define UPN
 $UPN = "projet.local"
@@ -33,7 +33,6 @@ foreach ($User in $ADUsers) {
     else {
 
         # User does not exist then proceed to create the new user account
-        # Account will be created in the OU provided by the $OU variable read from the CSV file
         New-ADUser `
             -SamAccountName $username `
             -UserPrincipalName "$username@$UPN" `

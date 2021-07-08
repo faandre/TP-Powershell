@@ -11,7 +11,7 @@ Connect-AzureAD -Credential $cred
 #Configuration DNS
 Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
 
-#On configure la forêt avec cette commande
+#On configure la forêt avec cette commande (projet.local)
 Install-ADDSForest
 
 #Pour résoudre les addresses via notre serveur DNS

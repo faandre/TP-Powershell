@@ -1,6 +1,6 @@
 # Groupe 3 : Yoan, Morgan et Fabrice | Master1 : SRC
 
-$script:ESGI_VMDeploy_version = "1.0.0"
+$script:ESGI_VMDeploy_version = "1.0.8"
 
 $cfg_file = Import-LocalizedData -BaseDirectory "C:\Powershell\Projet\" -FileName "cfg_file.psd1" -ErrorAction Stop
 
@@ -38,12 +38,15 @@ Update-AzVM `
   -VM $vm `
   -ResourceGroupName $cfg_file.RSGName_01
 
+# Install IIS
+$Settings = '{"commandToExecute":"powershell Add-WindowsFeature Web-Server"}'
+
+Set-AzVMExtension -ExtensionName "IIS" -ResourceGroupName $cfg_file.RSGName_01 -VMName $cfg_file.VM.Name_01 `
+  -Publisher "Microsoft.Compute" -ExtensionType "CustomScriptExtension" -TypeHandlerVersion 1.4 `
+  -SettingString $Settings -Location $cfg_file.Location
+
 # Create a bastion
 $subnetbastion = New-AzVirtualNetworkSubnetConfig -Name $cfg_file.Bastion.SubnetName -AddressPrefix $cfg_file.Bastion.SubnetAddressPrefix
-New-AzVirtualNetwork -Name $cfg_file.Bastion.VnetName -ResourceGroupName $cfg_file.RSGName_01 -Location $cfg_file.Location -AddressPrefix $cfg_file.Bastion.VnetAddressPrefix -Subnet $subnetbastion
-
-
-
-#convertto-csv -inputobject $vm -delimiter ";" -notypeinformation
-
-
+$vnetbastion = New-AzVirtualNetwork -Name $cfg_file.Bastion.VnetName -ResourceGroupName $cfg_file.RSGName_01 -Location $cfg_file.Location -AddressPrefix $cfg_file.Bastion.VnetAddressPrefix -Subnet $subnetbastion
+$publicipbastion = New-AzPublicIpAddress -ResourceGroupName $cfg_file.RSGName_01 -name $cfg_file.Bastion.PublicIP_Name -location $cfg_file.Location -AllocationMethod Static -Sku Standard
+New-AzBastion -ResourceGroupName $cfg_file.RSGName_01 -Name $cfg_file.Bastion.Name -PublicIpAddress $publicipbastion -VirtualNetwork $vnetbastion
